@@ -3,21 +3,18 @@ package Compte;
 public final class CompteEpargne extends CompteLimit {
     private final double minimumCredit;
     private final double versementMinimal;
-    private int numero;
-    private String nom;
     private double tauxRemuneration;
-    private double depot;
-    private double soldes;
 
-    public CompteEpargne(String nom,int numero,double minimumCredit,double versementMinimal,double tauxRemuneration,double depot){
-        super(depot);
-        this.nom=nom;
-        this.numero=numero;
-        this.minimumCredit=minimumCredit;
-        this.versementMinimal=versementMinimal;
-        this.tauxRemuneration=tauxRemuneration;
-        this.soldes = depot;
-
+    public CompteEpargne(double soldes,String nom,int numero,double minimumCredit,double versementMinimal,double tauxRemuneration,double depot){
+        super(soldes,numero,nom,depot);
+        if(soldes<versementMinimal){
+            throw new IllegalArgumentException("soldes insuffisant");
+        }
+        else{
+            this.minimumCredit=minimumCredit;
+            this.versementMinimal=versementMinimal;
+            this.tauxRemuneration=tauxRemuneration;
+        }
     }
     public void setTaux(double taux){
         this.tauxRemuneration = taux;
@@ -25,20 +22,28 @@ public final class CompteEpargne extends CompteLimit {
 
     @Override
     public void debiter(double montant){
-        if(soldes -montant<0){
+        if(getSoldes()-montant<0){
             throw new DecouvertException("Découvert");
         }
-        if(soldes-montant<versementMinimal){
-            throw new SoldeMinimalException("Solde minimal");
+        if(getSoldes()-montant<versementMinimal){
+            throw new ClotureException("Solde minimal");
         }
         else{
-            soldes-=montant;
+            setSoldes(getSoldes()-montant);
         }
     }
 
     @Override
     public void crediter(double montant) {
-        soldes+=montant;
+        if(montant<minimumCredit){
+            throw new IllegalArgumentException("Versement insuffisant");
+        }
+        if(montant>getDepot()){
+            throw new IllegalArgumentException("Plafond de depot atteint");
+        }
+        else {
+            setSoldes(getSoldes()+montant);
+        }
     }
 
     @Override
@@ -47,15 +52,9 @@ public final class CompteEpargne extends CompteLimit {
         compte.crediter(montant);
     }
 
-
-    @Override
     public double interet() {
+        //TO DO
         return 0;
-    }
-
-    @Override
-    public void afficherSolde() {
-        System.out.println("Soldes " +soldes);
     }
 
 
