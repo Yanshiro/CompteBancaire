@@ -1,11 +1,12 @@
 package Compte;
-
+import Exception.*;
 public final class CompteEpargne extends CompteLimit {
     private final double minimumCredit;
     private final double versementMinimal;
     private double tauxRemuneration;
 
-    public CompteEpargne(double soldes,String nom,int numero,double minimumCredit,double versementMinimal,double tauxRemuneration,double depot){
+    public CompteEpargne(double soldes,String nom,int numero,double minimumCredit,double versementMinimal
+            ,double tauxRemuneration,double depot)throws IllegalArgumentException{
         super(soldes,numero,nom,depot);
         if(soldes<versementMinimal){
             throw new IllegalArgumentException("soldes insuffisant");
@@ -26,7 +27,7 @@ public final class CompteEpargne extends CompteLimit {
             throw new DecouvertException("Découvert");
         }
         if(getSoldes()-montant<versementMinimal){
-            throw new ClotureException("Solde minimal");
+            throw new ClotureException("Solde minimal", this);
         }
         else{
             setSoldes(getSoldes()-montant);
@@ -34,7 +35,7 @@ public final class CompteEpargne extends CompteLimit {
     }
 
     @Override
-    public void crediter(double montant) {
+    public void crediter(double montant) throws IllegalArgumentException {
         if(montant<minimumCredit){
             throw new IllegalArgumentException("Versement insuffisant");
         }

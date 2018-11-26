@@ -1,4 +1,4 @@
-package Compte;
+package Exception;
 
 public class DecouvertException extends RuntimeException {
     public DecouvertException(){}

@@ -1,5 +1,5 @@
 package Compte;
-
+import Exception.*;
 
 public class CompteCourant extends CompteNoLimite {
     private double plancher;
@@ -18,7 +18,7 @@ public class CompteCourant extends CompteNoLimite {
 
     }
 
-    public void setPlancher(double plancher){
+    public void setPlancher(double plancher)throws  DecouvertException{
         if(getSoldes()<0) throw new DecouvertException();
         else {
             this.plancher=plancher;
@@ -27,7 +27,7 @@ public class CompteCourant extends CompteNoLimite {
     }
 
     @Override
-    public void debiter(double montant) {
+    public void debiter(double montant) throws DecouvertException {
         if(getSoldes()-montant<plancher)  throw new DecouvertException("Plancher atteint");
         else{
             setSoldes(getSoldes()-montant);

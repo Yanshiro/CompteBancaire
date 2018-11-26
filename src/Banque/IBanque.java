@@ -1,4 +1,7 @@
-package Compte;
+package Banque;
+
+import Compte.ICompte;
+import Compte.Utilisateur;
 
 public interface IBanque {
     void cloturer(ICompte compte);
