@@ -8,8 +8,4 @@ public interface ICompte {
     double getSoldes();
     String getNom();
 
-    default void afficherSolde(){
-        System.out.println(getSoldes());
-    }
-
 }

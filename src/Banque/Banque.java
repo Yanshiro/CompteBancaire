@@ -30,24 +30,18 @@ public class Banque implements IBanque {
 
     @Override
     public void listerCompte(Utilisateur u) {
-        for (ICompte compte: ListCompte){
-            if(compte.getNom()==u.getNom()){
-                System.out.println("Nom détenteur :" +compte.getNom()+
-                        "identifiant : "+ compte.getNumero());
-            }
-        }
+        ListCompte.stream()
+                .filter(compte -> compte.getNom()==u.getNom())
+                .forEach(compte -> System.out.println("Nom détenteur :" +compte.getNom()+
+                "identifiant : "+ compte.getNumero()));
     }
 
     @Override
     public void listerCompteetSolde(Utilisateur u) {
-        for (ICompte compte: ListCompte){
-            if(compte.getNom()==u.getNom()){
-                System.out.println("Nom détenteur :" +compte.getNom()+
-                        "identifiant : "+ compte.getNumero());
-                compte.afficherSolde();
-            }
-        }
-
+    ListCompte.stream()
+            .filter(compte -> compte.getNom() ==u.getNom())
+            .forEach(compte -> System.out.println("Nom détenteur :" +compte.getNom()+
+                    "identifiant : "+ compte.getNumero() + "solde " +compte.getSoldes()));
     }
 
     @Override
@@ -62,6 +56,5 @@ public class Banque implements IBanque {
     public int hashCode() {
         return Objects.hash(ListCompte);
     }
-
 
 }
